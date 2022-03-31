@@ -1,6 +1,7 @@
 import javax.annotation.Nullable
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 static def gitBranch() {
     def branch = 'GitHub'
@@ -34,11 +35,10 @@ static def getProperty(@Nullable Properties properties, String name) {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 32
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 32
 
         renderscriptTargetApi 29
         vectorDrawables.useSupportLibrary = true
@@ -46,6 +46,7 @@ android {
         applicationId 'com.kabouzeid.gramophone'
         versionCode 179
         versionName '1.3.5'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     signingConfigs {
         release {
@@ -69,17 +70,17 @@ android {
         }
     }
     packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-    }
-    lintOptions {
-        disable 'MissingTranslation'
-        disable 'InvalidPackage'
-        abortOnError false
+        resources {
+            excludes += ['META-INF/LICENSE', 'META-INF/NOTICE']
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lint {
+        abortOnError false
+        disable 'MissingTranslation', 'InvalidPackage'
     }
 }
 
@@ -112,6 +113,8 @@ dependencies {
     }
 
     implementation 'com.jakewharton:butterknife:10.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0-alpha05'
+    androidTestImplementation 'androidx.test:rules:1.4.1-alpha05'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
@@ -126,4 +129,9 @@ dependencies {
     implementation 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
 
     implementation 'com.github.AdrienPoupa:jaudiotagger:2.2.3'
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
