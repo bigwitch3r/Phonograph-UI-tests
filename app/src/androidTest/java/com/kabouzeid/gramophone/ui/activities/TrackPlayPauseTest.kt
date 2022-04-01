@@ -4,6 +4,7 @@ package com.kabouzeid.gramophone.ui.activities
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -37,16 +38,14 @@ class TrackPlayPauseTest {
 
     @Test
     fun trackPlayPauseTest() {
-        val appCompatButton = onView(
-                allOf(withText("Get started"),
-                        childAtPosition(
-                                allOf(withId(R.id.mi_button_cta),
-                                        childAtPosition(
-                                                withId(R.id.mi_frame),
-                                                4)),
-                                0),
-                        isDisplayed()))
-        appCompatButton.perform(click())
+        //val appCompatButton = onView(allOf(withText("Get started"), childAtPosition(allOf(withId(R.id.mi_button_cta), childAtPosition(withId(R.id.mi_frame), 4)), 0), isDisplayed()))
+        //appCompatButton.perform(click())
+        try {
+            val appCompatButton = onView(allOf(withText("Get started"), childAtPosition(allOf(withId(R.id.mi_button_cta), childAtPosition(withId(R.id.mi_frame), 4)), 0), isDisplayed()))
+            appCompatButton.perform(click())
+        } catch (e: NoMatchingViewException) {
+
+        }
 
         val frameLayout = onView(
                 allOf(childAtPosition(
