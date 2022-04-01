@@ -22,13 +22,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /*
-* TrackSwitchTest - Тест, осуществляющий переключение треков в проигрывателе
-* Осуществляет три нажатия на кнопку "Следующий трек" и еще три - на "Предыдущий трек"
+* FavoritesAddRemoveTest - Тест, осуществляющий добавление и удаление трека из Избранного
+* Осуществляет выбор первого трека в списке, раскрытие полноразмерного проигрывателя,
+* а также два нажатия по кнопке добавления трека в избранное
  */
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class TrackSwitchTest {
+class FavoritesAddRemoveTest {
 
     @Rule
     @JvmField
@@ -42,7 +43,7 @@ class TrackSwitchTest {
                     "android.permission.WRITE_EXTERNAL_STORAGE")
 
     @Test
-    fun trackSwitchTest() {
+    fun favoritesAddRemoveTest() {
         /*
         * При первом запуске приложение запускает приветственный экран с кнопкой Get started
         * Если при запуске теста этого экрана не будет, возникнет NoMatchingViewException
@@ -55,7 +56,7 @@ class TrackSwitchTest {
         } catch (e: NoMatchingViewException) {
         }
 
-        // Нажимаем на первый трек в списке
+        // Выбираем первый трек в списке
         val frameLayout = onView(
                 allOf(childAtPosition(
                         allOf(withId(R.id.recycler_view),
@@ -66,7 +67,7 @@ class TrackSwitchTest {
                         isDisplayed()))
         frameLayout.perform(click())
 
-        // Нажимаем на мини-проигрыватель внизу экрана, чтобы полностью его раскрыть
+        // Нажимаем на мини-проигрыватель внизу экрана
         val frameLayout2 = onView(
                 allOf(withId(R.id.mini_player_fragment),
                         childAtPosition(
@@ -78,73 +79,26 @@ class TrackSwitchTest {
                         isDisplayed()))
         frameLayout2.perform(click())
 
-        // Нажимаем три раза на кнопку "Следующий трек"
-        val appCompatImageButton = onView(
-                allOf(withId(R.id.player_next_button),
+        // Дважды нажимаем на кнопку в форме сердечка для добавления/удаления из Избранного
+        val actionMenuItemView = onView(
+                allOf(withId(R.id.action_toggle_favorite),
                         childAtPosition(
-                                allOf(withId(R.id.player_media_controller_container),
-                                        childAtPosition(
-                                                withId(R.id.playback_controls_fragment),
-                                                1)),
-                                1),
-                        isDisplayed()))
-        appCompatImageButton.perform(click())
-
-        val appCompatImageButton2 = onView(
-                allOf(withId(R.id.player_next_button),
-                        childAtPosition(
-                                allOf(withId(R.id.player_media_controller_container),
-                                        childAtPosition(
-                                                withId(R.id.playback_controls_fragment),
-                                                1)),
-                                1),
-                        isDisplayed()))
-        appCompatImageButton2.perform(click())
-
-        val appCompatImageButton3 = onView(
-                allOf(withId(R.id.player_next_button),
-                        childAtPosition(
-                                allOf(withId(R.id.player_media_controller_container),
-                                        childAtPosition(
-                                                withId(R.id.playback_controls_fragment),
-                                                1)),
-                                1),
-                        isDisplayed()))
-        appCompatImageButton3.perform(click())
-
-        // Нажимаем еще три раза, но уже на кнопку "Предыдущий трек"
-        val appCompatImageButton4 = onView(
-                allOf(withId(R.id.player_prev_button),
-                        childAtPosition(
-                                allOf(withId(R.id.player_media_controller_container),
-                                        childAtPosition(
-                                                withId(R.id.playback_controls_fragment),
-                                                1)),
+                                childAtPosition(
+                                        withId(R.id.player_toolbar),
+                                        0),
                                 0),
                         isDisplayed()))
-        appCompatImageButton4.perform(click())
+        actionMenuItemView.perform(click())
 
-        val appCompatImageButton5 = onView(
-                allOf(withId(R.id.player_prev_button),
+        val actionMenuItemView2 = onView(
+                allOf(withId(R.id.action_toggle_favorite),
                         childAtPosition(
-                                allOf(withId(R.id.player_media_controller_container),
-                                        childAtPosition(
-                                                withId(R.id.playback_controls_fragment),
-                                                1)),
+                                childAtPosition(
+                                        withId(R.id.player_toolbar),
+                                        0),
                                 0),
                         isDisplayed()))
-        appCompatImageButton5.perform(click())
-
-        val appCompatImageButton6 = onView(
-                allOf(withId(R.id.player_prev_button),
-                        childAtPosition(
-                                allOf(withId(R.id.player_media_controller_container),
-                                        childAtPosition(
-                                                withId(R.id.playback_controls_fragment),
-                                                1)),
-                                0),
-                        isDisplayed()))
-        appCompatImageButton6.perform(click())
+        actionMenuItemView.perform(click())
     }
 
     private fun childAtPosition(
