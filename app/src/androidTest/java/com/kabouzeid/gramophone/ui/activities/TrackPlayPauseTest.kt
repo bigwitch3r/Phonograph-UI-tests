@@ -21,14 +21,21 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/*
+* TrackPlayPauseTest - Тест, осуществляющий остановку и продолжение воспроизведения трека
+* Осуществляет два нажатия по кнопке воспроизведения в мини-фрагменте проигрывателя
+ */
+
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class TrackPlayPauseTest {
 
+    // Определяем Activity, с которой будем работать
     @Rule
     @JvmField
     var mActivityTestRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
+    // Предоставляем запрашиваемые разрешения
     @Rule
     @JvmField
     var mGrantPermissionRule: GrantPermissionRule =
@@ -38,15 +45,19 @@ class TrackPlayPauseTest {
 
     @Test
     fun trackPlayPauseTest() {
-        //val appCompatButton = onView(allOf(withText("Get started"), childAtPosition(allOf(withId(R.id.mi_button_cta), childAtPosition(withId(R.id.mi_frame), 4)), 0), isDisplayed()))
-        //appCompatButton.perform(click())
+        /*
+        * При первом запуске приложение запускает приветственный экран с кнопкой Get started
+        * Если при запуске теста этого экрана не будет, возникнет NoMatchingViewException
+        * Чтобы избежать этой ситуации, мы отлавливаем данное исключение
+        * Если оно возникло, мы ничего не делаем и переходим к следующему участку кода
+         */
         try {
             val appCompatButton = onView(allOf(withText("Get started"), childAtPosition(allOf(withId(R.id.mi_button_cta), childAtPosition(withId(R.id.mi_frame), 4)), 0), isDisplayed()))
             appCompatButton.perform(click())
         } catch (e: NoMatchingViewException) {
-
         }
 
+        // Кликаем на первый трек в списке
         val frameLayout = onView(
                 allOf(childAtPosition(
                         allOf(withId(R.id.recycler_view),
@@ -57,6 +68,7 @@ class TrackPlayPauseTest {
                         isDisplayed()))
         frameLayout.perform(click())
 
+        // Дважды нажимаем на кнопку Play/Pause
         val iconImageView = onView(
                 allOf(withId(R.id.mini_player_play_pause_button),
                         childAtPosition(
@@ -67,6 +79,7 @@ class TrackPlayPauseTest {
                         isDisplayed()))
         iconImageView.perform(click())
 
+        //
         val iconImageView2 = onView(
                 allOf(withId(R.id.mini_player_play_pause_button),
                         childAtPosition(
