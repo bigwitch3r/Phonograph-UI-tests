@@ -1,5 +1,6 @@
 package com.kabouzeid.gramophone.util;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -43,6 +44,7 @@ public class PlaylistsUtil {
                 new String[]{name});
     }
 
+    @SuppressLint("Range")
     public static long createPlaylist(@NonNull final Context context, @Nullable final String name) {
         long id = -1;
         if (name != null && name.length() > 0) {
